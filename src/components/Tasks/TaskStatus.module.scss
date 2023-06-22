@@ -1,0 +1,27 @@
+.container {
+    padding-top: 60px;
+}
+
+.taskContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family:"Figtree-Regular";
+    cursor:default;
+}
+
+.wishlist {
+    border-bottom: 2px solid rgb(255, 199, 199);
+}
+
+.to_do {
+    border-bottom: 2px solid rgb(187, 187, 255);
+}
+
+.in_progress {
+    border-bottom: 2px solid greenyellow;
+}
+
+.done {
+    border-bottom: 2px solid rgb(255, 216, 144);
+}
