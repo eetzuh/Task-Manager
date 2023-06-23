@@ -34,7 +34,7 @@
   box-sizing: border-box;
   position: fixed;
   z-index: 1;
-  border-bottom: 1px solid rgb(211, 211, 211);
+  border-bottom: 1px solid rgb(112, 112, 112);
   background-color: white;
 
   a{
@@ -43,8 +43,11 @@
       color: black;
       text-decoration: none;
       font-family: 'Figtree-Medium';
+      padding-bottom: 2px;
+      border-bottom: 2px solid rgb(189, 189, 189);
   }
   a:hover{
       color: rgb(54, 54, 54);
+      cursor: pointer;
   }
 }

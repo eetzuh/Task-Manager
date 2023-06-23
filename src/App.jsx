@@ -1,20 +1,9 @@
 import { useState } from 'react'
 import TaskStatus from './components/Tasks/TaskStatus.jsx'
+import ManageTasks from './components/ManageTasks/ManageTasks.jsx';
 import styles from './App.module.scss';
 
 function App() {
- 
-  const navLinks = [
-    {
-        title: "Početna",
-        link: '#'
-    },
-    {
-        title: "Upravljanje taskovima",
-        link: "#"
-    }
-  ]
-
   const taskCol = [
     {
       status:'wishlist',
@@ -34,13 +23,22 @@ function App() {
     },
   ]
 
+  const [page, setPage] = useState('pocetna');
+  const [task, setTask] = useState({
+    Naziv:'',
+    Opis:''
+  });
   return (
     <>
       <div className={styles.nav_container}>
-       { navLinks.map((item, index) => <a href={item.link} key={item.title+index}>{item.title}</a>)}
+        <a onClick={() => setPage (prevState => prevState == 'pocetna' ? 'upravljanje' : 'pocetna')}>
+          {page == 'pocetna' ? "Početna" : "Upravljanje taskovima"}
+        </a>
       </div>
       <div className={styles.tasksContainer}> 
-        {taskCol.map((item) => <TaskStatus status={item.status} title={item.title}/>)}
+        { page == 'pocetna' ?
+         taskCol.map((item) => <TaskStatus status={item.status} title={item.title} task={task} setTask={setTask}/>) 
+         : <ManageTasks task={task} setTask={setTask}/>}
       </div>
     </>
   )
