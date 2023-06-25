@@ -1,23 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Form from './Form.jsx'
+import Table from './Table.jsx'
 
-const ManageTasks = ({task, setTask}) => {
-    // const [filter, setFilter] = useState();
+const ManageTasks = ({ task, setTask, taskCol, taskItems }) => {
     const [form, setForm] = useState(false);
+    const [taskId, setTaskId] = useState(0);
+
+    const handleForm = () => {
+        setForm(prevState => !prevState)
+    }
     return <div>
-        {/* <Filter/> */}
-        <button onClick={() =>setForm(prevState => !prevState)}>Dodaj</button>
-        <button onClick={()=>console.log(task)}></button>
+        <button onClick={handleForm}>Dodaj</button>
         <div>
-           { form && <Form task={task} setTask={setTask}/> }
+            {form && <Form taskId={taskId}  setTaskId={setTaskId} setTask={setTask} taskCol={taskCol} taskItems={taskItems} handleForm={handleForm} />}
         </div>
-        <table>
-            <thead>
-                <th>Naziv</th>
-                <th>Status</th>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <Table task={task} setTask={setTask} />
     </div>
 }
 

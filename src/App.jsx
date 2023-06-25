@@ -1,33 +1,45 @@
 import { useState } from 'react'
-import TaskStatus from './components/Tasks/TaskStatus.jsx'
+import TaskShow from './components/Tasks/TaskShow.jsx'
 import ManageTasks from './components/ManageTasks/ManageTasks.jsx';
 import styles from './App.module.scss';
 
 function App() {
+
   const taskCol = [
     {
-      status:'wishlist',
-      title: 'Wishlist'
+      status:'wishlist'
     },
     {
       status:'to_do',
-      title: 'To do'
     },
     {
       status:'in_progress',
-      title: 'In progress'
     },
     {
       status:'done',
-      title: 'Done'
     },
   ]
+  
+  const titleName = (statusName) => {
+    return statusName.charAt(0).toUpperCase()+statusName.slice(1).replace('_', ' ');
+  };
+  
+  taskCol.forEach((task) => {
+    if (!task.title) {
+      task.title = titleName(task.status);
+    }
+  });
+
+  const taskItems ={
+    id:'',
+    Naziv:'Bez naziva',
+    Opis:'Bez opisa',
+    status:'Wishlist'
+  }
 
   const [page, setPage] = useState('pocetna');
-  const [task, setTask] = useState({
-    Naziv:'',
-    Opis:''
-  });
+  const [task, setTask] = useState([]);
+ 
   return (
     <>
       <div className={styles.nav_container}>
@@ -35,10 +47,9 @@ function App() {
           {page == 'pocetna' ? "Početna" : "Upravljanje taskovima"}
         </a>
       </div>
-      <div className={styles.tasksContainer}> 
-        { page == 'pocetna' ?
-         taskCol.map((item) => <TaskStatus status={item.status} title={item.title} task={task} setTask={setTask}/>) 
-         : <ManageTasks task={task} setTask={setTask}/>}
+      <div className={styles.bodyContainer}> 
+        { page == 'pocetna' ? <TaskShow taskCol={taskCol} task={task}/>
+         : <ManageTasks task={task} setTask={setTask} taskCol={taskCol} taskItems={taskItems}/>}
       </div>
     </>
   )

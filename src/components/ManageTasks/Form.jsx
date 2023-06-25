@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Input from './Input';
+import Select from './Select'
 
-const Form = ({task, setTask}) => {
+const Form = ({ taskId, setTaskId, setTask, taskCol, taskItems, handleForm }) => {
+
     const inputInfo = [
         {
             label: 'Naziv',
@@ -12,11 +14,20 @@ const Form = ({task, setTask}) => {
             placeholder: 'Unesi opis'
         },
     ]
+
+    const addTask = () => {
+        setTaskId(taskId + 1)
+        taskItems.id=taskId
+        setTask(prevTask => [...prevTask, taskItems])
+        handleForm()
+    }
+
     return <form>
-        {inputInfo.map((item)=> <Input label={item.label} 
-        placeholder={item.placeholder} task={task}
-        setTask={setTask}/>)}
-        <button>Dodaj task</button>
+        {inputInfo.map((item, index) =>
+            <Input key={index} label={item.label} placeholder={item.placeholder} taskItems={taskItems} />
+        )}
+        <Select taskCol={taskCol} taskItems={taskItems} />
+        <button type='button' onClick={addTask}>Dodaj task</button>
     </form>
 }
 
