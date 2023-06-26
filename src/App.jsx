@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useReducer } from 'react'
 import TaskShow from './components/Tasks/TaskShow.jsx'
 import ManageTasks from './components/ManageTasks/ManageTasks.jsx';
 import styles from './App.module.scss';
@@ -7,49 +7,64 @@ function App() {
 
   const taskCol = [
     {
-      status:'wishlist'
+      status: 'wishlist'
     },
     {
-      status:'to_do',
+      status: 'to_do',
     },
     {
-      status:'in_progress',
+      status: 'in_progress',
     },
     {
-      status:'done',
+      status: 'done',
     },
   ]
-  
+
   const titleName = (statusName) => {
-    return statusName.charAt(0).toUpperCase()+statusName.slice(1).replace('_', ' ');
+    return statusName.charAt(0).toUpperCase() + statusName.slice(1).replace('_', ' ');
   };
-  
+
   taskCol.forEach((task) => {
     if (!task.title) {
       task.title = titleName(task.status);
     }
   });
 
-  const taskItems ={
-    id:'',
-    Naziv:'Bez naziva',
-    Opis:'Bez opisa',
-    status:'Wishlist'
+  const taskItems = {
+    id: '',
+    Naziv: 'Bez naziva',
+    Opis: 'Bez opisa',
+    status: 'Wishlist'
   }
 
   const [page, setPage] = useState('pocetna');
-  const [task, setTask] = useState([]);
- 
+
+  const initialSate = []
+  function reducer(state, action) {
+    switch (action.type) {
+      case 'add_task':
+        return [...state, action.payload];
+      case 'edit_task':
+        return state.map((item, index) =>
+          index == action.id ? action.payload : item
+        )
+      case 'delete_task':
+        return state.filter((item, index) => index !== action.id)
+    }
+  }
+  const [state, dispatch] = useReducer(reducer, initialSate)
+
+
   return (
     <>
       <div className={styles.nav_container}>
-        <a onClick={() => setPage (prevState => prevState == 'pocetna' ? 'upravljanje' : 'pocetna')}>
+        <a onClick={() => setPage(prevState => prevState == 'pocetna' ? 'upravljanje' : 'pocetna')}>
           {page == 'pocetna' ? "Početna" : "Upravljanje taskovima"}
         </a>
       </div>
-      <div className={styles.bodyContainer}> 
-        { page == 'pocetna' ? <TaskShow taskCol={taskCol} task={task}/>
-         : <ManageTasks task={task} setTask={setTask} taskCol={taskCol} taskItems={taskItems}/>}
+      <div className={styles.bodyContainer}>
+        {page == 'pocetna' ? <TaskShow taskCol={taskCol} task={state} />
+          : <ManageTasks taskCol={taskCol} taskItems={taskItems} task={state} dispatch={dispatch} />}
       </div>
     </>
   )

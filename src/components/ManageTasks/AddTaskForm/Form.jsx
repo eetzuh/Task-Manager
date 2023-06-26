@@ -2,7 +2,7 @@ import React from 'react';
 import Input from './Input';
 import Select from './Select'
 
-const Form = ({ taskId, setTaskId, setTask, taskCol, taskItems, handleForm }) => {
+const Form = ({ taskId, setTaskId, taskCol, taskItems, handleForm, dispatch }) => {
 
     const inputInfo = [
         {
@@ -18,8 +18,9 @@ const Form = ({ taskId, setTaskId, setTask, taskCol, taskItems, handleForm }) =>
     const addTask = () => {
         setTaskId(taskId + 1)
         taskItems.id=taskId
-        setTask(prevTask => [...prevTask, taskItems])
+        dispatch({type:'add_task', payload: taskItems});
         handleForm()
+        console.log(state)
     }
 
     return <form>
